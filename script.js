@@ -11,8 +11,11 @@ function addTask(event) {
     // adding the new value to the list
     let newEl = document.createElement("li");
     newEl.textContent = inputValue;
-    
+
     taskList.appendChild(newEl);
+
+    //adding data to localStorage
+    localStorage.setItem(1, newEl);
 }
 
 let form = document.querySelector("#task-form");

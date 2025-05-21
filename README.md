@@ -1,8 +1,8 @@
 # 🗂️ Mini Trello
 
 Simple one-pager: Trello/To-Do List.
-Allows you to manipulate with a tasks: add/delete/mark as completed
-Data being stored in localStorage
+- Allows you to manipulate with a tasks: add/delete/mark as completed
+- Data being stored in localStorage
 
 ## 🔧 Stack of technologies
 - HTML
