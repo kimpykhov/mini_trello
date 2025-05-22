@@ -4,6 +4,15 @@ function addTask(event) {
 
     // storing value from input
     let inputValue = document.querySelector("#task-input").value;
+
+    if (localStorage.length === 0) {
+        let tasksList = [];
+    } else {
+        tasksList.push(inputValue);
+    }
+
+    
+    let serializationList = JSON.stringify(tasksList);
     
     // storing value from list
     let taskList = document.querySelector("#task-list");
@@ -15,7 +24,7 @@ function addTask(event) {
     taskList.appendChild(newEl);
 
     //adding data to localStorage
-    localStorage.setItem(1, newEl);
+    localStorage.setItem(1, serializationList);
 }
 
 let form = document.querySelector("#task-form");
