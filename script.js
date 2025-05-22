@@ -5,26 +5,30 @@ function addTask(event) {
     // storing value from input
     let inputValue = document.querySelector("#task-input").value;
 
-    if (localStorage.length === 0) {
-        let tasksList = [];
+    let tasksList;
+    const stored = localStorage.getItem("tasks");
+
+    if (stored === null) {        
+        tasksList = [];
     } else {
-        tasksList.push(inputValue);
+        tasksList = JSON.parse(stored);
     }
 
+    tasksList.push(inputValue);
     
     let serializationList = JSON.stringify(tasksList);
+
+    //adding data to localStorage
+    localStorage.setItem("tasks", serializationList);
     
     // storing value from list
-    let taskList = document.querySelector("#task-list");
+    let domTaskList = document.querySelector("#task-list");
 
     // adding the new value to the list
     let newEl = document.createElement("li");
     newEl.textContent = inputValue;
 
-    taskList.appendChild(newEl);
-
-    //adding data to localStorage
-    localStorage.setItem(1, serializationList);
+    domTaskList.appendChild(newEl);
 }
 
 let form = document.querySelector("#task-form");
