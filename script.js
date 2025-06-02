@@ -31,6 +31,27 @@ function addTask(event) {
     domTaskList.appendChild(newEl);
 }
 
+function loadTasks() {
+    const stored = localStorage.getItem("tasks");
+    let parsedList = [];
+    if (stored != null) {
+       parsedList = JSON.parse(stored);
+       let domTaskList = document.querySelector("#task-list");
+       parsedList.forEach(element => {
+            let newEl = document.createElement("li");
+            newEl.textContent = element;
+            domTaskList.appendChild(newEl);
+       });
+    }
+}
+
+function deleteTasks(event) {    
+    localStorage.clear();
+}
+
 let form = document.querySelector("#task-form");
+const deleteBtn = document.querySelector("#delete-btn");
 
 form.addEventListener("submit", addTask);
+deleteBtn.addEventListener("click", deleteTasks);
+loadTasks();
