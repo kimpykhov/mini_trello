@@ -1,6 +1,6 @@
 let domTaskList = document.querySelector("#task-list");
 
-const stored = localStorage.getItem("tasks");
+//const stored = localStorage.getItem("tasks");
 
 function addTask(event) {
     // prevent page reboot
@@ -10,7 +10,7 @@ function addTask(event) {
     let inputValue = document.querySelector("#task-input").value;
 
     let tasksList;
-    //const stored = localStorage.getItem("tasks");
+    const stored = localStorage.getItem("tasks");
 
     if (stored === null) {        
         tasksList = [];
@@ -26,7 +26,7 @@ function addTask(event) {
     localStorage.setItem("tasks", serializationList);
     
     // storing value from list
-    //let domTaskList = document.querySelector("#task-list");
+    let domTaskList = document.querySelector("#task-list");
 
     // adding the new value to the list
     let newEl = document.createElement("li");
@@ -36,11 +36,11 @@ function addTask(event) {
 }
 
 function loadTasks() {
-    //const stored = localStorage.getItem("tasks");
+    const stored = localStorage.getItem("tasks");
     let parsedList = [];
     if (stored != null) {
        parsedList = JSON.parse(stored);
-       //let domTaskList = document.querySelector("#task-list");
+       let domTaskList = document.querySelector("#task-list");
        parsedList.forEach(element => {
             let newEl = document.createElement("li");
             newEl.textContent = element;
