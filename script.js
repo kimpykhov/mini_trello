@@ -1,4 +1,12 @@
-let domTaskList = document.querySelector("#task-list");
+// TODO vars visibility
+
+// TODO ID to identify in cards const?
+
+// TODO functions for creating in DOM tree elements depend of const completed/active
+
+// TODO better way to identify status? mb with an integer?
+
+//let domTaskList = document.querySelector("#task-list");
 
 //const stored = localStorage.getItem("tasks");
 
@@ -10,6 +18,14 @@ function addTask(event) {
     let inputValue = document.querySelector("#task-input").value;
 
     let tasksList;
+
+    const active = 1;
+    const completed = 0;
+    const cards = {
+        description: inputValue,
+        status: active
+    };
+
     const stored = localStorage.getItem("tasks");
 
     if (stored === null) {        
@@ -18,7 +34,7 @@ function addTask(event) {
         tasksList = JSON.parse(stored);
     }
 
-    tasksList.push(inputValue);
+    tasksList.push(cards);
     
     let serializationList = JSON.stringify(tasksList);
 
@@ -43,7 +59,7 @@ function loadTasks() {
        let domTaskList = document.querySelector("#task-list");
        parsedList.forEach(element => {
             let newEl = document.createElement("li");
-            newEl.textContent = element;
+            newEl.textContent = element.description;
             domTaskList.appendChild(newEl);
        });
     }
