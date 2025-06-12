@@ -81,16 +81,23 @@ function deleteTasks(event) {
 function filterTasks(event) {
     
     const clickedId = event.target.id;
+    const status = event.target.status;
 
     switch (clickedId) {
-        case "all-btn":
-            console.log("all");
+        case "all-btn":            
+            if (status == 1 || status == 0) {
+                console.log("all");
+            }
             break;
-        case "active-btn":
-            console.log("active");
+        case "active-btn":            
+            if (status == 1) {   
+                console.log("active");             
+            }
             break;
-        case "completed-btn":
-            console.log("completed");
+        case "completed-btn":            
+            if (status == 0) {
+                console.log("completed");
+            }
             break;
         default:
             console.log("unknown")
