@@ -4,10 +4,6 @@
 
 // TODO better way to identify status? mb with an integer?
 
-//let domTaskList = document.querySelector("#task-list");
-
-//const stored = localStorage.getItem("tasks");
-
 function addTask(event) {
     // prevent page reboot
     event.preventDefault();
@@ -40,15 +36,8 @@ function addTask(event) {
 
     //adding data to localStorage
     localStorage.setItem("tasks", serializationList);
-    
-    // storing value from list
-    let domTaskList = document.querySelector("#task-list");
 
-    // adding the new value to the list
-    let newEl = document.createElement("li");
-    newEl.textContent = inputValue;
-
-    domTaskList.appendChild(newEl);
+    renderTask(cards);
 }
 
 // load tasks after page reboot 
@@ -81,27 +70,53 @@ function deleteTasks(event) {
 function filterTasks(event) {
     
     const clickedId = event.target.id;
-    const status = event.target.status;
+    const stored = JSON.parse(localStorage.getItem("tasks"));
 
     switch (clickedId) {
         case "all-btn":            
-            if (status == 1 || status == 0) {
-                console.log("all");
-            }
+            stored.forEach(task => {
+                console.log("all");               
+            });            
             break;
         case "active-btn":            
-            if (status == 1) {   
-                console.log("active");             
-            }
+            stored.forEach(task => {
+                if (task.status === 1) {
+                    console.log("active");
+                }
+            })
             break;
         case "completed-btn":            
-            if (status == 0) {
+            stored.forEach(task => {
+            if (task.status === 0) {
                 console.log("completed");
             }
-            break;
+        })
+        break;
         default:
             console.log("unknown")
     }
+}
+
+function renderTask(task) {
+    const domTaskList = document.querySelector("#task-list");
+
+    const newEl = document.createElement("li");
+    newEl.textContent = task.description;
+
+    if (task.status === 0) {
+        newEl.classList.add("completed");
+    }
+
+    newEl.dataset.id = task.id;
+
+    domTaskList.appendChild(newEl);
+}
+
+function renderTaskList(tasksArray) {
+    const domTaskList = document.querySelector("#task-list");
+    domTaskList.innerHTML = "";
+
+    tasksArray.forEach(renderTask);
 }
 
 let form = document.querySelector("#task-form");
