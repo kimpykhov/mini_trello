@@ -142,3 +142,5 @@ activeBtn.addEventListener("click", filterTasks);
 completedBtn.addEventListener("click", filterTasks);
 
 loadTasks();
+
+//fake
