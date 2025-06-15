@@ -4,6 +4,10 @@
 
 // TODO better way to identify status? mb with an integer?
 
+function getStoredTasks() {
+    return JSON.parse(localStorage.getItem("tasks")) || [];
+}
+
 function addTask(event) {
     // prevent page reboot
     event.preventDefault();
@@ -22,17 +26,11 @@ function addTask(event) {
         status: active
     };
 
-    const stored = localStorage.getItem("tasks");
+    const tasks = getStoredTasks();
 
-    if (stored === null) {        
-        tasksList = [];
-    } else {
-        tasksList = JSON.parse(stored);
-    }
-
-    tasksList.push(cards);
+    tasks.push(cards);
     
-    let serializationList = JSON.stringify(tasksList);
+    let serializationList = JSON.stringify(tasks);
 
     //adding data to localStorage
     localStorage.setItem("tasks", serializationList);
@@ -42,19 +40,19 @@ function addTask(event) {
 
 // load tasks after page reboot 
 function loadTasks() {
-    const stored = localStorage.getItem("tasks");
-
-    let parsedList = [];
+    const stored = getStoredTasks();
 
     if (stored != null) {
-       parsedList = JSON.parse(stored);
        let domTaskList = document.querySelector("#task-list");
-       parsedList.forEach(element => {
+       stored.forEach(element => {
             let newEl = document.createElement("li");
             newEl.textContent = element.description;
             domTaskList.appendChild(newEl);
        });
+    } else {
+        console.log("empty");
     }
+    // TODO to add exception if user tries to load tasks on empty
 }
 
 // tasks removal
@@ -70,7 +68,7 @@ function deleteTasks(event) {
 function filterTasks(event) {
     
     const clickedId = event.target.id;
-    const stored = JSON.parse(localStorage.getItem("tasks"));
+    const stored = getStoredTasks();
 
     switch (clickedId) {
         case "all-btn":            
