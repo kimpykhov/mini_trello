@@ -10,8 +10,7 @@ function getStoredTasks() {
 
 
 function setStoredTasks(tasks) {
-    let serializationList = JSON.stringify(tasks);
-    return localStorage.setItem("tasks", serializationList);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 
@@ -19,25 +18,30 @@ function getInputValue() {
     return document.querySelector("#task-input").value.trim();
 }
 
+function objectForStorage(description) {
+    return {
+        id: self.crypto.randomUUID(),
+        description,
+        status: STATUS.ACTIVE
+    };
+};
+
+const STATUS = {
+    ACTIVE: 1,
+    COMPLETED: 0
+};
 
 function addTask(event) {
     // prevent page reboot
     event.preventDefault();
 
     // storing value from input
-    // let inputValue = document.querySelector("#task-input").value;
     let inputValue = getInputValue();
 
     let tasksList;
-    let uuid = self.crypto.randomUUID();
-
-    const active = 1;
-    const completed = 0;
-    const cards = {
-        id: uuid,
-        description: inputValue,
-        status: active
-    };
+    let uuid = self.crypto.randomUUID(); 
+    
+    const cards = objectForStorage(inputValue);
 
     const tasks = getStoredTasks();
 
