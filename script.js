@@ -8,6 +8,7 @@ function getStoredTasks() {
     return JSON.parse(localStorage.getItem("tasks")) || [];
 }
 
+
 function setStoredTasks(tasks) {
     let serializationList = JSON.stringify(tasks);
     return localStorage.setItem("tasks", serializationList);
