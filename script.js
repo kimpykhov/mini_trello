@@ -8,12 +8,24 @@ function getStoredTasks() {
     return JSON.parse(localStorage.getItem("tasks")) || [];
 }
 
+function setStoredTasks(tasks) {
+    let serializationList = JSON.stringify(tasks);
+    return localStorage.setItem("tasks", serializationList);
+}
+
+
+function getInputValue() {
+    return document.querySelector("#task-input").value.trim();
+}
+
+
 function addTask(event) {
     // prevent page reboot
     event.preventDefault();
 
     // storing value from input
-    let inputValue = document.querySelector("#task-input").value;
+    // let inputValue = document.querySelector("#task-input").value;
+    let inputValue = getInputValue();
 
     let tasksList;
     let uuid = self.crypto.randomUUID();
@@ -29,11 +41,8 @@ function addTask(event) {
     const tasks = getStoredTasks();
 
     tasks.push(cards);
-    
-    let serializationList = JSON.stringify(tasks);
 
-    //adding data to localStorage
-    localStorage.setItem("tasks", serializationList);
+    const setTasks = setStoredTasks(tasks);
 
     renderTask(cards);
 }
