@@ -8,11 +8,9 @@ function getStoredTasks() {
     return JSON.parse(localStorage.getItem("tasks")) || [];
 }
 
-
 function setStoredTasks(tasks) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
-
 
 function getInputValue() {
     return document.querySelector("#task-input").value.trim();
@@ -26,10 +24,10 @@ function objectForStorage(description) {
     };
 };
 
-const STATUS = {
+const STATUS = Object.freeze({
     ACTIVE: 1,
     COMPLETED: 0
-};
+});
 
 function addTask(event) {
     // prevent page reboot
@@ -39,25 +37,27 @@ function addTask(event) {
     let inputValue = getInputValue();
 
     let tasksList;
-    let uuid = self.crypto.randomUUID(); 
     
-    const cards = objectForStorage(inputValue);
+    const newTasks = objectForStorage(inputValue);
 
     const tasks = getStoredTasks();
 
-    tasks.push(cards);
+    tasks.push(newTasks);
 
     const setTasks = setStoredTasks(tasks);
 
-    renderTask(cards);
+    renderTask(newTasks);
+
+    document.querySelector("#task-input").value = "";
 }
+
+const domTaskList = document.querySelector("#task-list");
 
 // load tasks after page reboot 
 function loadTasks() {
     const stored = getStoredTasks();
 
-    if (stored != null) {
-       let domTaskList = document.querySelector("#task-list");
+    if (stored != null) {       
        stored.forEach(element => {
             let newEl = document.createElement("li");
             newEl.textContent = element.description;
@@ -87,7 +87,8 @@ function filterTasks(event) {
     switch (clickedId) {
         case "all-btn":            
             stored.forEach(task => {
-                console.log("all");               
+                console.log("all");
+                loadTasks();              
             });            
             break;
         case "active-btn":            
@@ -110,8 +111,6 @@ function filterTasks(event) {
 }
 
 function renderTask(task) {
-    const domTaskList = document.querySelector("#task-list");
-
     const newEl = document.createElement("li");
     newEl.textContent = task.description;
 
@@ -124,8 +123,7 @@ function renderTask(task) {
     domTaskList.appendChild(newEl);
 }
 
-function renderTaskList(tasksArray) {
-    const domTaskList = document.querySelector("#task-list");
+function renderTaskList(tasksArray) {    
     domTaskList.innerHTML = "";
 
     tasksArray.forEach(renderTask);
@@ -146,5 +144,3 @@ activeBtn.addEventListener("click", filterTasks);
 completedBtn.addEventListener("click", filterTasks);
 
 loadTasks();
-
-//fake
