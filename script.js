@@ -78,36 +78,46 @@ function deleteTasks(event) {
     tree.forEach((element) => element.remove());
 }
 
+function getFilteredTasks(filterType) {
+    const tasks = getStoredTasks();
+
+    switch (filterType) {
+        case "all":
+            return tasks;
+        case "active":
+            return tasks.filter(task => task.status === STATUS.ACTIVE);
+        case "completed":
+            return tasks.filter(task => task.status === STATUS.COMPLETED);
+        default:
+                return [];
+    }
+
+}
+
 //filter tasks by typeof
 function filterTasks(event) {
     
     const clickedId = event.target.id;
-    const stored = getStoredTasks();
+    let filterType;
+    //const stored = getStoredTasks();
 
     switch (clickedId) {
         case "all-btn":            
-            stored.forEach(task => {
-                console.log("all");
-                loadTasks();              
-            });            
+            filterType = "all";            
             break;
         case "active-btn":            
-            stored.forEach(task => {
-                if (task.status === 1) {
-                    console.log("active");
-                }
-            })
+            filterType = "active";            
             break;
         case "completed-btn":            
-            stored.forEach(task => {
-            if (task.status === 0) {
-                console.log("completed");
-            }
-        })
-        break;
+            filterType = "completed";            
+            break;        
         default:
-            console.log("unknown")
+            console.warn("Unknown filter:", clickedId);
+            return;
     }
+
+    const filteredTasks = getFilteredTasks(filterType);
+    renderTaskList(filteredTasks);
 }
 
 function renderTask(task) {
