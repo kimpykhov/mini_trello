@@ -4,18 +4,27 @@
 
 // TODO better way to identify status? mb with an integer?
 
+// getter for a storage
 function getStoredTasks() {
     return JSON.parse(localStorage.getItem("tasks")) || [];
 }
 
+// setter for a storage
 function setStoredTasks(tasks) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
+// get input, removing extra spaces
 function getInputValue() {
     return document.querySelector("#task-input").value.trim();
 }
 
+const STATUS = Object.freeze({
+    ACTIVE: 1,
+    COMPLETED: 0
+});
+
+// creating object for storage
 function objectForStorage(description) {
     return {
         id: self.crypto.randomUUID(),
@@ -24,10 +33,22 @@ function objectForStorage(description) {
     };
 };
 
-const STATUS = Object.freeze({
-    ACTIVE: 1,
-    COMPLETED: 0
-});
+// dom-tree object where all tasks stored
+const domTaskList = document.querySelector("#task-list");
+
+// create elements 
+function renderTask(task) {
+    const newEl = document.createElement("li");
+    newEl.textContent = task.description;
+
+    if (task.status === 0) {
+        newEl.classList.add("completed");
+    }
+
+    newEl.dataset.id = task.id;
+
+    domTaskList.appendChild(newEl);
+}
 
 function addTask(event) {
     // prevent page reboot
@@ -50,8 +71,6 @@ function addTask(event) {
 
     document.querySelector("#task-input").value = "";
 }
-
-const domTaskList = document.querySelector("#task-list");
 
 // load tasks after page reboot 
 function loadTasks() {
@@ -89,9 +108,8 @@ function getFilteredTasks(filterType) {
         case "completed":
             return tasks.filter(task => task.status === STATUS.COMPLETED);
         default:
-                return [];
+            return [];
     }
-
 }
 
 //filter tasks by typeof
@@ -120,18 +138,6 @@ function filterTasks(event) {
     renderTaskList(filteredTasks);
 }
 
-function renderTask(task) {
-    const newEl = document.createElement("li");
-    newEl.textContent = task.description;
-
-    if (task.status === 0) {
-        newEl.classList.add("completed");
-    }
-
-    newEl.dataset.id = task.id;
-
-    domTaskList.appendChild(newEl);
-}
 
 function renderTaskList(tasksArray) {    
     domTaskList.innerHTML = "";
