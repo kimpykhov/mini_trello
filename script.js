@@ -1,9 +1,3 @@
-// TODO vars visibility
-
-// TODO functions for creating in DOM tree elements depend of const completed/active
-
-// TODO better way to identify status? mb with an integer?
-
 // getter for a storage
 function getStoredTasks() {
     return JSON.parse(localStorage.getItem("tasks")) || [];
@@ -50,14 +44,18 @@ function renderTask(task) {
     domTaskList.appendChild(newEl);
 }
 
+function renderTaskList(tasksArray) {    
+    domTaskList.innerHTML = "";
+
+    tasksArray.forEach(renderTask);
+}
+
 function addTask(event) {
     // prevent page reboot
     event.preventDefault();
 
     // storing value from input
     let inputValue = getInputValue();
-
-    let tasksList;
     
     const newTasks = objectForStorage(inputValue);
 
@@ -117,7 +115,6 @@ function filterTasks(event) {
     
     const clickedId = event.target.id;
     let filterType;
-    //const stored = getStoredTasks();
 
     switch (clickedId) {
         case "all-btn":            
@@ -136,13 +133,6 @@ function filterTasks(event) {
 
     const filteredTasks = getFilteredTasks(filterType);
     renderTaskList(filteredTasks);
-}
-
-
-function renderTaskList(tasksArray) {    
-    domTaskList.innerHTML = "";
-
-    tasksArray.forEach(renderTask);
 }
 
 let form = document.querySelector("#task-form");
